@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style type="text/css">
+         body { 
+             background: aqua
+             }        
+    </style>
+</head>
+
+<body>
+   <center>      
+   
+      <h1>Tic Tac Toe for Windows 95, IE 3.0</h1>
+   <table border="1" bgcolor="black" width="200" height="200">
+        <tr>          
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(0, 0, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(0, 1, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(0, 2, this);updateInnerHTML(this)"></td>
+        </tr>
+        <tr>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 0, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 1, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 2, this);updateInnerHTML(this)"></td>
+        </tr>
+        <tr>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 0, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 1, this);updateInnerHTML(this)"></td>
+            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 2, this);updateInnerHTML(this)"></td>
+        </tr>
+    </table> 
+</br>
+</br>
+
+<p>Created by Povilas, 2023</p>
+</center>
+
+
+<script type="text/javascript"> 
+   
+    function updateInnerHTML(element) {             
+        element.innerHTML = currentPlayer;           
+    }
+
+
+    var board = new Array(3);
+        for (var i = 0; i < 3; i++) {
+            board[i] = new Array(3);
+            for (var j = 0; j < 3; j++) {
+                board[i][j] = '';
+            }
+        }
+    
+    var currentPlayer = 'X';
+
+    function makeMove1(row, col, cell) {       
+        if (board[row][col] == '') {
+            board[row][col] = currentPlayer;
+            cell.innerHTML = currentPlayer;
+            if (checkWin(row, col)) {
+                alert(currentPlayer + ' wins!');
+                window.location.href = window.location.href;
+            } else {
+                if (currentPlayer == 'X') {
+                    currentPlayer = 'O';
+                } else {
+                    currentPlayer = 'X';
+                }
+            }
+        }
+    }
+
+
+    function makeMove(row, col, cell) {
+    if (board[row][col] == '') {
+        board[row][col] = currentPlayer;
+        cell.value = currentPlayer; // Update the cell's value before switching the currentPlayer
+        if (checkWin(row, col)) {
+            alert(currentPlayer + ' wins!');
+            window.location.href = window.location.href;
+        }
+        if (currentPlayer == 'X') {
+            currentPlayer = 'O';
+        } else {
+            currentPlayer = 'X';
+        }
+    }
+}
+
+    function checkWin(row, col) {
+        // Check row
+        for (var i = 0; i < 3; i++) {
+            if (board[row][i] != currentPlayer) {
+                break;
+            }
+            if (i == 2) {
+                return true;
+            }
+        }
+
+        // Check column
+        for (var i = 0; i < 3; i++) {
+            if (board[i][col] != currentPlayer) {
+                break;
+            }
+            if (i == 2) {
+                return true;
+            }
+        }
+
+        // Check diagonal
+        if (row == col) {
+            for (var i = 0; i < 3; i++) {
+                if (board[i][i] != currentPlayer) {
+                    break;
+                }
+                if (i == 2) {
+                    return true;
+                }
+            }
+        }
+
+        // Check anti-diagonal
+        if (row + col == 2) {
+            for (var i = 0; i < 3; i++) {
+                if (board[i][2 - i] != currentPlayer) {
+                    break;
+                }
+                if (i == 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
+
+</script>
+    
+</body>
+</html>
