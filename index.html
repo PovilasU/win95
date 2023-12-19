@@ -77,7 +77,6 @@
 
         return Dat;
       }
-
       // Plot the board
       function DrawTable(Dat) {
         var i, Sqr;
@@ -87,45 +86,35 @@
         for (i = 1; i <= 9; i++) {
           Sqr = Get(Dat, i);
 
-          if (Sqr == 0) {
-            if (Result == ResWin) {
-              //no more links if it's been won
-              html += '<IMG ALIGN=bottom SRC="gameb.gif">';
-            } else {
-              //a link for human moves
-              html +=
-                '<A HREF="index.html' +
-                Set(Dat, i, "3") +
-                '"><IMG ALIGN=bottom BORDER=0 SRC="gameb.gif"></A>';
-            }
-          } else if (Sqr == 3) {
-            // it's an X
-            html += '<IMG ALIGN=bottom SRC="gamex.gif">';
-          } else {
-            // must be an O
-            html += '<IMG ALIGN=bottom SRC="gameo.gif">';
-          }
+          html +=
+            Sqr == 0
+              ? Result == ResWin
+                ? '<IMG ALIGN=bottom SRC="gameb.gif">'
+                : '<A HREF="index.html' +
+                  Set(Dat, i, "3") +
+                  '"><IMG ALIGN=bottom BORDER=0 SRC="gameb.gif"></A>'
+              : Sqr == 3
+              ? '<IMG ALIGN=bottom SRC="gamex.gif">'
+              : '<IMG ALIGN=bottom SRC="gameo.gif">';
 
-          if (i == 9) {
-            // finished
-            html += "<P>";
-          } else if (i == 3 || i == 6) {
-            // long horizontal line
-            html += '<br><IMG ALIGN=bottom  SRC="gamedh.gif"><br>';
-          } else {
-            // vertical line
-            html += '<IMG ALIGN=bottom SRC="gamedv.gif">';
-          }
+          html +=
+            i == 9
+              ? "<P>"
+              : i == 3 || i == 6
+              ? '<br><IMG ALIGN=bottom  SRC="gamedh.gif"><br>'
+              : '<IMG ALIGN=bottom SRC="gamedv.gif">';
         }
 
         html += "<H2>"; //make comments
 
-        if (Result == ResDraw)
-          html +=
-            'It\'s a draw!<BR>Want <A HREF="index.html">another game</A>?';
-        else if (Result == ResStart) html += "Your go first ...";
-        else if (Result == ResWin)
-          html += 'I won!<BR>Like to <A HREF="index.html">play again</A>?';
+        html +=
+          Result == ResDraw
+            ? 'It\'s a draw!<BR>Want <A HREF="index.html">another game</A>?'
+            : Result == ResStart
+            ? "Your go first ..."
+            : Result == ResWin
+            ? 'I won!<BR>Like to <A HREF="index.html">play again</A>?'
+            : "";
 
         html += "<BR></H2>";
         html += "<p><b>Created by Povilas, 2023</b> </p>";
