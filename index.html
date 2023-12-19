@@ -33,14 +33,13 @@
           Order = "2613",
           PosCorns;
         var j, i, a, b, c;
-        if (Get(Dat, 5) == 1) {
-          //if computer's in centre
-          PosLines = "132798174396546528519537";
-          PosCorns = "124326748968";
-        } else {
-          PosLines = "519537132798174396546528";
-          PosCorns = "542526548586";
-        }
+
+        //if computer's in centre
+        PosLines =
+          Get(Dat, 5) == 1
+            ? "132798174396546528519537"
+            : "519537132798174396546528";
+        PosCorns = Get(Dat, 5) == 1 ? "124326748968" : "542526548586";
 
         Result = ResWin;
 
@@ -50,9 +49,13 @@
             b = Get(PosLines, i + 1);
             c = Get(PosLines, i + 2);
             if (Sum(Dat, a, b, c) == Get(Order, j)) {
-              if (Get(Dat, a) == 0) return Set(Dat, a, 1);
-              if (Get(Dat, b) == 0) return Set(Dat, b, 1);
-              if (Get(Dat, c) == 0) return Set(Dat, c, 1);
+              return Get(Dat, a) == 0
+                ? Set(Dat, a, 1)
+                : Get(Dat, b) == 0
+                ? Set(Dat, b, 1)
+                : Get(Dat, c) == 0
+                ? Set(Dat, c, 1)
+                : undefined;
             }
           }
 
@@ -65,7 +68,7 @@
               b = Get(PosCorns, i + 1);
               c = Get(PosCorns, i + 2);
               if (Sum(Dat, a, b, c) == 6)
-                if (Get(Dat, a) == 0) return Set(Dat, a, 1);
+                return Get(Dat, a) == 0 ? Set(Dat, a, 1) : undefined;
             }
           }
         }
