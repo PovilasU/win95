@@ -131,13 +131,9 @@
         document.write(html);
       }
 
-      if (location.search.length == 10) {
-        // during the game
-        DrawTable(MyMove(location.search));
-      } else {
-        // just started
-        DrawTable("?000000000"); // draw a load of blanks
-      }
+      DrawTable(
+        location.search.length == 10 ? MyMove(location.search) : "?000000000"
+      ); // draw a load of blanks if just started
     </script>
   </body>
 </html>
