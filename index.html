@@ -1,143 +1,153 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Tic Tac Toe</title>
-    <style type="text/css">
-         body { 
-             background: aqua
-             } 
-    </style>
-</head>
+  <head>
+    <title>Tic Tac Toe for Windows 95 , IE 3.0</title>
+  </head>
 
-<body>
-   <center>      
-   
-      <h1>Tic Tac Toe for Windows 95, IE 3.0</h1>
-   <table border="1" bgcolor="black" width="200" height="200">
-        <tr>          
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(0, 0, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"> <input type="submit" value="" onClick="makeMove(0, 1, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(0, 2, this);updateInnerHTML(this)"></td>
-        </tr>
-        <tr>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 0, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 1, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(1, 2, this);updateInnerHTML(this)"></td>
-        </tr>
-        <tr>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 0, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 1, this);updateInnerHTML(this)"></td>
-            <td bgcolor="white"><input type="submit" value="" onClick="makeMove(2, 2, this);updateInnerHTML(this)"></td>
-        </tr>
-    </table> 
-</br>
-</br>
+  <body background="base.gif">
+    <script language="JavaScript">
+      var ResNorm = 0,
+        ResWin = 1,
+        ResDraw = 2,
+        ResStart = 3;
+      var Result = ResStart;
 
-<p>Created by Povilas, 2023</p>
-</center>
+      function Set(Str, Off, Val) {
+        // equiv. to Str[Off] = Val; return Str
+        return Str.substring(0, Off) + Val + Str.substring(Off + 1);
+      }
 
+      function Get(Str, Off) {
+        //equiv. to return Str[Off]
+        //'- -' turns a string into a number
+        return -(-Str.substring(Off, Off + 1));
+      }
 
-<script type="text/javascript"> 
-   
-    function updateInnerHTML(element) {             
-        element.innerHTML = currentPlayer;           
-    }
+      function Sum(Str, a, b, c) {
+        //adds the contents of a, b and c
+        return Get(Str, a) + Get(Str, b) + Get(Str, c);
+      }
 
-
-    var board = new Array(3);
-        for (var i = 0; i < 3; i++) {
-            board[i] = new Array(3);
-            for (var j = 0; j < 3; j++) {
-                board[i][j] = '';
-            }
-        }
-    
-    var currentPlayer = 'X';
-
-    function makeMove1(row, col, cell) {       
-        if (board[row][col] == '') {
-            board[row][col] = currentPlayer;
-            cell.innerHTML = currentPlayer;
-            if (checkWin(row, col)) {
-                alert(currentPlayer + ' wins!');
-                window.location.href = window.location.href;
-            } else {
-                if (currentPlayer == 'X') {
-                    currentPlayer = 'O';
-                } else {
-                    currentPlayer = 'X';
-                }
-            }
-        }
-    }
-
-
-    function makeMove(row, col, cell) {
-    if (board[row][col] == '') {
-        board[row][col] = currentPlayer;
-        cell.value = currentPlayer; // Update the cell's value before switching the currentPlayer
-        if (checkWin(row, col)) {
-            alert(currentPlayer + ' wins!');
-            window.location.href = window.location.href;
-        }
-        if (currentPlayer == 'X') {
-            currentPlayer = 'O';
+      ///
+      function MyMove(Dat) {
+        //do computer's move
+        var PosLines,
+          Order = "2613",
+          PosCorns;
+        var j, i, a, b, c;
+        if (Get(Dat, 5) == 1) {
+          //if computer's in centre
+          PosLines = "132798174396546528519537";
+          PosCorns = "124326748968";
         } else {
-            currentPlayer = 'X';
-        }
-    }
-}
-
-    function checkWin(row, col) {
-        // Check row
-        for (var i = 0; i < 3; i++) {
-            if (board[row][i] != currentPlayer) {
-                break;
-            }
-            if (i == 2) {
-                return true;
-            }
+          PosLines = "519537132798174396546528";
+          PosCorns = "542526548586";
         }
 
-        // Check column
-        for (var i = 0; i < 3; i++) {
-            if (board[i][col] != currentPlayer) {
-                break;
+        Result = ResWin;
+
+        for (j = 0; j < 4; j++) {
+          for (i = 0; i < 24; i += 3) {
+            a = Get(PosLines, i);
+            b = Get(PosLines, i + 1);
+            c = Get(PosLines, i + 2);
+            if (Sum(Dat, a, b, c) == Get(Order, j)) {
+              if (Get(Dat, a) == 0) return Set(Dat, a, 1);
+              if (Get(Dat, b) == 0) return Set(Dat, b, 1);
+              if (Get(Dat, c) == 0) return Set(Dat, c, 1);
             }
-            if (i == 2) {
-                return true;
+          }
+
+          Result = ResNorm;
+
+          if (j == 1) {
+            //only between 2nd and 3rd passes
+            for (i = 0; i < 12; i += 3) {
+              a = Get(PosCorns, i);
+              b = Get(PosCorns, i + 1);
+              c = Get(PosCorns, i + 2);
+              if (Sum(Dat, a, b, c) == 6)
+                if (Get(Dat, a) == 0) return Set(Dat, a, 1);
             }
+          }
         }
 
-        // Check diagonal
-        if (row == col) {
-            for (var i = 0; i < 3; i++) {
-                if (board[i][i] != currentPlayer) {
-                    break;
-                }
-                if (i == 2) {
-                    return true;
-                }
+        Result = ResDraw; //no places to go
+
+        return Dat;
+      }
+      //
+
+      // Plot the board
+      function DrawTable(Dat) {
+        var i, Sqr;
+        document.write("<center>");
+        document.write(
+          "<h1>Tic-Tac-Toe for Windows 95, Internet Explorer 3.0</h1>"
+        );
+        for (i = 1; i <= 9; i++) {
+          Sqr = Get(Dat, i);
+
+          if (Sqr == 0) {
+            if (Result == ResWin) {
+              //no more links if it's been won
+              document.write('<IMG ALIGN=bottom SRC="gameb.gif">');
             }
+
+            //a link for human moves
+            else {
+              document.write('<A HREF="index.html');
+              document.write(Set(Dat, i, "3"));
+              document.write(
+                '"><IMG ALIGN=bottom BORDER=0 SRC="gameb.gif"></A>'
+              );
+            }
+          } else if (Sqr == 3)
+            // it's an X
+
+            document.write('<IMG ALIGN=bottom SRC="gamex.gif">');
+          // must be an O
+          else document.write('<IMG ALIGN=bottom SRC="gameo.gif">');
+
+          //
+          if (i == 9)
+            // finished
+            document.write("<P>");
+          else if (i == 3 || i == 6) {
+            // long horizontal line
+
+            document.write('<br><IMG ALIGN=bottom  SRC="gamedh.gif"><br>');
+          }
+
+          // vertical line
+          else document.write('<IMG ALIGN=bottom SRC="gamedv.gif">');
         }
 
-        // Check anti-diagonal
-        if (row + col == 2) {
-            for (var i = 0; i < 3; i++) {
-                if (board[i][2 - i] != currentPlayer) {
-                    break;
-                }
-                if (i == 2) {
-                    return true;
-                }
-            }
-        }
+        //
+        document.write("<H2>"); //make comments
 
-        return false;
-    }
-    
+        if (Result == ResDraw)
+          document.write(
+            "It's" + ' a draw!<BR>Want <A HREF="index.html">another game</A>?'
+          );
+        else if (Result == ResStart) document.write("Your go first ...");
+        else if (Result == ResWin)
+          document.write(
+            'I won!<BR>Like to <A HREF="index.html">play again</A>?'
+          );
 
-</script>
-    
-</body>
+        document.write("<BR></H2>");
+        document.write("<p><b>Created by Povilas, 2023</b> </p>");
+        document.write("</center>");
+      }
+
+      if (location.search.length == 10) {
+        // during the game
+        DrawTable(MyMove(location.search));
+      } else {
+        // just started
+        DrawTable("?000000000"); // draw a load of blanks
+      }
+    </script>
+  </body>
 </html>
