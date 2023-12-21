@@ -85,19 +85,19 @@
           html +=
             Sqr == 0
               ? Result == ResWin
-                ? createImgTag("gameb.gif")
+                ? createImgTag("images/gameb.gif")
                 : '<A HREF="index.html' +
                   Set(Dat, i, "3") +
-                  '"><IMG ALIGN=bottom BORDER=0 SRC="gameb.gif"></A>'
+                  '"><IMG ALIGN=bottom BORDER=0 SRC="images/gameb.gif"></A>'
               : Sqr == 3
-              ? createImgTag("gamex.gif")
-              : createImgTag("gameo.gif");
+              ? createImgTag("images/gamex.gif")
+              : createImgTag("images/gameo.gif");
           html +=
             i == 9
               ? "<P>"
               : i % 3 == 0
-              ? '<br><IMG ALIGN=bottom  SRC="gamedh.gif"><br>'
-              : createImgTag("gamedv.gif");
+              ? '<br><IMG ALIGN=bottom  SRC="images/gamedh.gif"><br>'
+              : createImgTag("images/gamedv.gif");
         }
         html += "<H2>"; //make comments
         html +=
