@@ -26,28 +26,26 @@
         // Sum the values at the specified offsets in the string
         return Get(Str, a) + Get(Str, b) + Get(Str, c);
       }
-
       function MyMove(Dat) {
-        //do computer's move
         var PosLines,
           Order = "2613",
-          PosCorns;
-        var j, i, a, b, c;
-
-        //if computer's in centre
-        PosLines =
-          Get(Dat, 5) == 1
-            ? "132798174396546528519537"
-            : "519537132798174396546528";
-        PosCorns = Get(Dat, 5) == 1 ? "124326748968" : "542526548586";
-
+          PosCorns,
+          j,
+          i,
+          a,
+          b,
+          c,
+          center = Get(Dat, 5) == 1;
+        PosLines = center
+          ? "132798174396546528519537"
+          : "519537132798174396546528";
+        PosCorns = center ? "124326748968" : "542526548586";
         Result = ResWin;
-
         for (j = 0; j < 4; j++) {
           for (i = 0; i < 24; i += 3) {
-            a = Get(PosLines, i);
-            b = Get(PosLines, i + 1);
-            c = Get(PosLines, i + 2);
+            (a = Get(PosLines, i)),
+              (b = Get(PosLines, i + 1)),
+              (c = Get(PosLines, i + 2));
             if (Sum(Dat, a, b, c) == Get(Order, j)) {
               return Get(Dat, a) == 0
                 ? Set(Dat, a, 1)
@@ -58,55 +56,50 @@
                 : undefined;
             }
           }
-
           Result = ResNorm;
-
           if (j == 1) {
-            //only between 2nd and 3rd passes
             for (i = 0; i < 12; i += 3) {
-              a = Get(PosCorns, i);
-              b = Get(PosCorns, i + 1);
-              c = Get(PosCorns, i + 2);
+              (a = Get(PosCorns, i)),
+                (b = Get(PosCorns, i + 1)),
+                (c = Get(PosCorns, i + 2));
               if (Sum(Dat, a, b, c) == 6)
                 return Get(Dat, a) == 0 ? Set(Dat, a, 1) : undefined;
             }
           }
         }
-
-        Result = ResDraw; //no places to go
-
+        Result = ResDraw;
         return Dat;
       }
-      // Plot the board
-      function DrawTable(Dat) {
-        var i, Sqr;
-        var html = "<center>";
-        html += "<h1>Tic-Tac-Toe for Windows 95, Internet Explorer 3.0</h1>";
 
+      function createImgTag(src) {
+        return '<IMG ALIGN=bottom SRC="' + src + '">';
+      }
+
+      function DrawTable(Dat) {
+        var i,
+          Sqr,
+          html =
+            "<center><h1>Tic-Tac-Toe for Windows 95, Internet Explorer 3.0</h1>";
         for (i = 1; i <= 9; i++) {
           Sqr = Get(Dat, i);
-
           html +=
             Sqr == 0
               ? Result == ResWin
-                ? '<IMG ALIGN=bottom SRC="gameb.gif">'
+                ? createImgTag("gameb.gif")
                 : '<A HREF="index.html' +
                   Set(Dat, i, "3") +
                   '"><IMG ALIGN=bottom BORDER=0 SRC="gameb.gif"></A>'
               : Sqr == 3
-              ? '<IMG ALIGN=bottom SRC="gamex.gif">'
-              : '<IMG ALIGN=bottom SRC="gameo.gif">';
-
+              ? createImgTag("gamex.gif")
+              : createImgTag("gameo.gif");
           html +=
             i == 9
               ? "<P>"
-              : i == 3 || i == 6
+              : i % 3 == 0
               ? '<br><IMG ALIGN=bottom  SRC="gamedh.gif"><br>'
-              : '<IMG ALIGN=bottom SRC="gamedv.gif">';
+              : createImgTag("gamedv.gif");
         }
-
         html += "<H2>"; //make comments
-
         html +=
           Result == ResDraw
             ? 'It\'s a draw!<BR>Want <A HREF="index.html">another game</A>?'
@@ -115,11 +108,7 @@
             : Result == ResWin
             ? 'I won!<BR>Like to <A HREF="index.html">play again</A>?'
             : "";
-
-        html += "<BR></H2>";
-        html += "<p><b>Created by Povilas, 2023</b> </p>";
-        html += "</center>";
-
+        html += "<BR></H2><p><b>Created by Povilas, 2023</b> </p></center>";
         document.write(html);
       }
 
